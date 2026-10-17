@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: API .NET
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v7
+
+      - name: Preparar .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore Tarefas.sln
+
+      - name: Compilar API e testes
+        run: dotnet build Tarefas.sln --configuration Release --no-restore
+
+      - name: Executar testes da API
+        run: dotnet test Tarefas.sln --configuration Release --no-build --no-restore
+
+  frontend:
+    name: Angular
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v7
+
+      - name: Preparar Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar Angular
+        run: npm run build
+
+      - name: Executar testes do Angular
+        run: npm test
