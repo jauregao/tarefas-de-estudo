@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, inject, OnInit, signal, viewChild } from '@angular/core';
 import { Tarefa, TarefasService } from './tarefas.service';
 
 @Component({
@@ -11,6 +11,7 @@ export class App implements OnInit {
   private readonly tituloInput = viewChild<ElementRef<HTMLInputElement>>('tituloInput');
   private readonly listaTitulo = viewChild<ElementRef<HTMLHeadingElement>>('listaTitulo');
   readonly tarefas = signal<Tarefa[]>([]);
+  readonly pendentes = computed(() => this.tarefas().filter(tarefa => !tarefa.concluida).length);
   readonly titulo = signal('');
   readonly carregando = signal(true);
   readonly ocupada = signal(false);
