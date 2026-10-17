@@ -1,0 +1,18 @@
+@api = http://localhost:5027
+
+GET {{api}}/api/tarefas
+
+### Criar (resposta 201)
+POST {{api}}/api/tarefas
+Content-Type: application/json
+
+{"titulo": "Revisar modelos de serviço em nuvem"}
+
+### Validação (resposta 400)
+POST {{api}}/api/tarefas
+Content-Type: application/json
+
+{"titulo": "   "}
+
+### Substitua 1 pelo ID retornado no cadastro
+PATCH {{api}}/api/tarefas/1/concluir

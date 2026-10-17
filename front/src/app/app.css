@@ -1,0 +1,37 @@
+.pular { position: absolute; left: 1rem; top: -5rem; padding: .8rem; background: white; z-index: 1; }
+.pular:focus { top: .5rem; }
+.cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 5vw; border-bottom: 1px solid #dce4da; background: #fffef9; }
+.marca { font-weight: 750; display: flex; gap: .7rem; align-items: center; }
+.simbolo { display: inline-grid; place-items: center; width: 2rem; height: 2rem; background: #dbe8da; border-radius: .6rem; }
+.etiqueta { font-size: .8rem; color: #52665a; }
+main { max-width: 800px; margin: auto; padding: 3.5rem 1.5rem 2rem; }
+.introducao { max-width: 650px; margin-bottom: 2.25rem; }
+.sobretitulo { text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; font-weight: 700; color: #526b54; }
+h1 { font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.12; letter-spacing: -.035em; margin: .75rem 0 1rem; }
+.introducao > p:last-child { color: #52665a; line-height: 1.6; }
+h2 { font-size: 1.15rem; margin: 0 0 1.3rem; }
+.painel { background: #fffef9; padding: 1.7rem; border: 1px solid #dce4da; border-radius: 1rem; }
+label { display: block; font-weight: 650; font-size: .9rem; margin-bottom: .65rem; }
+.obrigatorio { font-weight: 400; color: #52665a; }
+.linha-form { display: flex; gap: .7rem; }
+input { flex: 1; min-width: 0; border: 1px solid #809585; border-radius: .5rem; padding: .85rem; color: #203c33; background: white; }
+button { border: 1px solid #24563f; border-radius: .5rem; padding: .8rem 1rem; background: #24563f; color: white; font-weight: 650; min-height: 44px; }
+button:hover:not(:disabled) { background: #193b2c; }
+.secundario { background: transparent; color: #24563f; }
+.secundario:hover:not(:disabled) { background: #e4ede2; }
+.ajuda { color: #52665a; font-size: .8rem; margin: .7rem 0 0; }
+.erro { color: #9a2525; }
+.aviso { min-height: 1.4rem; font-size: .9rem; margin: .8rem 0; }
+.falha { border: 1px solid #b05b48; background: #fff2ed; padding: 1rem; border-radius: .7rem; margin-bottom: 1rem; }
+.falha p { margin-top: 0; }
+.lista ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.lista li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.2rem 1.4rem; background: #fffef9; border: 1px solid #dce4da; border-radius: .8rem; }
+.tarefa-texto { min-width: 0; overflow-wrap: anywhere; }
+h3 { margin: 0 0 .45rem; font-size: 1rem; font-weight: 650; }
+.estado { display: inline-block; border-radius: 1rem; background: #f4eacb; color: #66501a; font-size: .75rem; padding: .25rem .6rem; }
+.concluida .estado { background: #dfeadb; color: #2c5036; }
+.feito { color: #416549; font-size: .85rem; white-space: nowrap; }
+.vazio { text-align: center; padding: 2rem 1rem; border: 1px dashed #809585; border-radius: .8rem; }
+.vazio span { font-size: 1.7rem; }
+footer { text-align: center; padding: 1.5rem; color: #52665a; font-size: .8rem; }
+@media (max-width: 600px) { .cabecalho { flex-wrap: wrap; } main { padding-top: 2rem; } .painel { padding: 1.2rem; } .linha-form { flex-direction: column; } .lista li { align-items: flex-start; flex-direction: column; } }
