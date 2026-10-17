@@ -7,6 +7,7 @@ Aplicação para organizar tarefas de estudo. Permite cadastrar tarefas, consult
 - Cadastro de tarefas com título obrigatório.
 - Listagem de tarefas pendentes e concluídas.
 - Conclusão de tarefas.
+- Contador de tarefas pendentes, atualizado após carregar, cadastrar e concluir.
 - Mensagens de validação, carregamento e erro na interface.
 
 O título é normalizado removendo espaços nas pontas. Títulos vazios ou compostos apenas por espaços são rejeitados. A aplicação não possui autenticação: todas as tarefas pertencem à mesma lista.

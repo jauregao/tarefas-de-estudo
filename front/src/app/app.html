@@ -35,6 +35,9 @@
   }
   <section class="lista" aria-labelledby="lista-titulo" [attr.aria-busy]="carregando() || ocupada()">
     <h2 #listaTitulo id="lista-titulo" tabindex="-1">Suas tarefas</h2>
+    @if (!carregando() && !erro()) {
+      <p class="ajuda" role="status">Tarefas pendentes: {{ pendentes() }}</p>
+    }
     @if (carregando()) {
       <p role="status">Carregando tarefas…</p>
     } @else if (!erro() && tarefas().length === 0) {
