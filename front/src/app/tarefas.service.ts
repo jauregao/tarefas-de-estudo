@@ -1,5 +1,6 @@
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { API_BASE_URL } from './auth.service';
 
 export interface Tarefa {
   id: number;
@@ -10,7 +11,7 @@ export interface Tarefa {
 // Configuração local explícita para acompanhar a requisição na aula de nuvem.
 // Configuração por ambiente será trabalhada na aula de build/publicação.
 export const API_URL = new InjectionToken<string>('API_URL', {
-  providedIn: 'root', factory: () => 'http://localhost:5027/api/tarefas',
+  providedIn: 'root', factory: () => `${inject(API_BASE_URL)}/api/tarefas`,
 });
 
 @Injectable({ providedIn: 'root' })
@@ -21,4 +22,7 @@ export class TarefasService {
   listar() { return this.http.get<Tarefa[]>(this.url); }
   criar(titulo: string) { return this.http.post<Tarefa>(this.url, { titulo }); }
   concluir(id: number) { return this.http.patch<Tarefa>(`${this.url}/${id}/concluir`, {}); }
+  reabrir(id: number) { return this.http.patch<Tarefa>(`${this.url}/${id}/reabrir`, {}); }
+  atualizar(id: number, titulo: string) { return this.http.patch<Tarefa>(`${this.url}/${id}`, { titulo }); }
+  excluir(id: number) { return this.http.delete<void>(`${this.url}/${id}`); }
 }

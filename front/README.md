@@ -1,6 +1,6 @@
 # Frontend — Tarefas de estudo
 
-Interface Angular para cadastrar, listar e concluir tarefas. Consulte o [README principal](../README.md) para conhecer a arquitetura da aplicação.
+Interface Angular com cadastro/login e quadro de tarefas por conta, incluindo cadastro, conclusão, edição e exclusão de tarefas. Consulte o [README principal](../README.md) para conhecer a arquitetura da aplicação.
 
 ## Pré-requisitos
 
@@ -23,7 +23,7 @@ Acessar [http://localhost:4200](http://localhost:4200). Para encerrar o servidor
 
 ## Conexão com a API
 
-O token `API_URL`, em `src/app/tarefas.service.ts`, define o endereço `http://localhost:5027/api/tarefas`.
+O token `API_BASE_URL`, em `src/app/auth.service.ts`, define o endereço base da API e, por padrão, usa `http://localhost:5027`. O serviço de tarefas acrescenta `/api/tarefas`; o serviço de acesso usa os endpoints de cadastro, login e perfil.
 
 A API permite requisições da origem `http://localhost:4200`. Usar esse endereço no navegador, pois `127.0.0.1` representa outra origem para a configuração de CORS.
 
@@ -35,8 +35,9 @@ npm test
 
 Os testes usam Vitest e jsdom, executam uma única rodada e terminam automaticamente. Uma falha resulta em código de saída diferente de zero. Não exigem navegador instalado, API em execução ou banco de dados.
 
-- `src/app/app.spec.ts`: lista vazia, validação de título, cadastro, conclusão e mensagens de falha.
-- `src/app/tarefas.service.spec.ts`: requisições GET, POST e PATCH e suas respostas, usando HTTP simulado.
+- `src/app/app.spec.ts`: acesso à tela protegida, lista vazia, validação de título, cadastro, conclusão e mensagens de falha.
+- `src/app/tarefas.service.spec.ts`: requisições GET, POST, PATCH e DELETE e suas respostas, usando HTTP simulado.
+- `src/app/auth.service.spec.ts`: cadastro, login, persistência do token de sessão e recuperação do perfil.
 
 ## Build
 

@@ -1,58 +1,138 @@
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <header class="cabecalho">
   <div class="marca"><span class="simbolo" aria-hidden="true">✓</span> Meu espaço de estudo</div>
-  <span class="etiqueta">WoMakersCode · Projeto do módulo 10</span>
+  @if (auth.usuario(); as usuario) {
+    <div class="conta">
+      <span>Olá, {{ usuario.nome }}</span>
+      <button type="button" class="secundario" (click)="sair()">Sair</button>
+    </div>
+  } @else {
+    <span class="etiqueta">Seu espaço para aprender</span>
+  }
 </header>
 <main id="conteudo">
-  <section class="introducao" aria-labelledby="titulo-pagina">
-    <p class="sobretitulo">Um passo de cada vez</p>
-    <h1 id="titulo-pagina">Organize o que você quer aprender.</h1>
-    <p>Guarde suas próximas tarefas de estudo e acompanhe cada conquista.</p>
-  </section>
-  <section class="painel" aria-labelledby="cadastro-titulo">
-    <h2 id="cadastro-titulo">Qual é o próximo passo?</h2>
-    <form (submit)="criar($event)" novalidate>
-      <label for="titulo">Título da tarefa <span class="obrigatorio">(obrigatório)</span></label>
-      <div class="linha-form">
-        <input #tituloInput id="titulo" name="titulo" type="text" required
-          placeholder="Ex.: revisar modelos de serviço em nuvem"
-          [value]="titulo()" (input)="titulo.set($any($event.target).value)"
-          [attr.aria-invalid]="erroTitulo() ? 'true' : null"
-          [attr.aria-describedby]="erroTitulo() ? 'ajuda-titulo erro-titulo' : 'ajuda-titulo'"
-          [readOnly]="ocupada()">
-        <button type="submit" [disabled]="ocupada() || carregando()">Adicionar tarefa</button>
+  @if (auth.carregando()) {
+    <p role="status">Verificando seu acesso…</p>
+  } @else if (auth.usuario()) {
+    <section class="introducao" aria-labelledby="titulo-pagina">
+      <p class="sobretitulo">Um passo de cada vez</p>
+      <h1 id="titulo-pagina">Organize o que você quer aprender.</h1>
+      <p>Guarde suas próximas tarefas de estudo e acompanhe cada conquista.</p>
+    </section>
+    <section class="painel" aria-labelledby="cadastro-titulo">
+      <h2 id="cadastro-titulo">Qual é o próximo passo?</h2>
+      <form (submit)="criar($event)" novalidate>
+        <label for="titulo">Título da tarefa <span class="obrigatorio">(obrigatório)</span></label>
+        <div class="linha-form">
+          <input #tituloInput id="titulo" name="titulo" type="text" required
+            placeholder="Ex.: revisar modelos de serviço em nuvem"
+            [value]="titulo()" (input)="titulo.set($any($event.target).value)"
+            [attr.aria-invalid]="erroTitulo() ? 'true' : null"
+            [attr.aria-describedby]="erroTitulo() ? 'ajuda-titulo erro-titulo' : 'ajuda-titulo'"
+            [readOnly]="ocupada()">
+          <button type="submit" [disabled]="ocupada() || carregando()">Adicionar tarefa</button>
+        </div>
+        <p id="ajuda-titulo" class="ajuda">Uma tarefa pequena ajuda a começar.</p>
+        @if (erroTitulo()) { <p id="erro-titulo" class="erro" role="alert">{{ erroTitulo() }}</p> }
+      </form>
+    </section>
+    <p class="aviso" role="status">{{ aviso() }}</p>
+    @if (erro()) {
+      <div class="falha" role="alert">
+        <p>{{ erro() }}</p>
+        <button type="button" class="secundario" (click)="carregar()" [disabled]="ocupada() || carregando()">Tentar novamente</button>
       </div>
-      <p id="ajuda-titulo" class="ajuda">Uma tarefa pequena ajuda a começar.</p>
-      @if (erroTitulo()) { <p id="erro-titulo" class="erro" role="alert">{{ erroTitulo() }}</p> }
-    </form>
-  </section>
-  <p class="aviso" role="status">{{ aviso() }}</p>
-  @if (erro()) {
-    <div class="falha" role="alert">
-      <p>{{ erro() }}</p>
-      <button type="button" class="secundario" (click)="carregar()" [disabled]="ocupada() || carregando()">Tentar novamente</button>
-    </div>
-  }
-  <section class="lista" aria-labelledby="lista-titulo" [attr.aria-busy]="carregando() || ocupada()">
-    <h2 #listaTitulo id="lista-titulo" tabindex="-1">Suas tarefas</h2>
-    @if (carregando()) {
-      <p role="status">Carregando tarefas…</p>
-    } @else if (!erro() && tarefas().length === 0) {
-      <div class="vazio"><span aria-hidden="true">✦</span><p>Nenhuma tarefa cadastrada.</p></div>
     }
-    <ul>
-      @for (tarefa of tarefas(); track tarefa.id) {
-        <li [class.concluida]="tarefa.concluida">
-          <div class="tarefa-texto"><h3>{{ tarefa.titulo }}</h3>
-            <span class="estado">{{ tarefa.concluida ? 'Concluída' : 'Pendente' }}</span>
-          </div>
-          @if (!tarefa.concluida) {
-            <button type="button" class="secundario" [disabled]="ocupada() || carregando()"
-              [attr.aria-label]="'Concluir tarefa: ' + tarefa.titulo" (click)="concluir(tarefa)">Concluir</button>
-          } @else { <span class="feito" aria-label="Tarefa concluída">✓ Concluída</span> }
-        </li>
+    <section class="lista" aria-labelledby="lista-titulo" [attr.aria-busy]="carregando() || ocupada()">
+      <h2 #listaTitulo id="lista-titulo" tabindex="-1">Suas tarefas</h2>
+      @if (carregando()) {
+        <p role="status">Carregando tarefas…</p>
+      } @else if (!erro() && tarefas().length === 0) {
+        <div class="vazio"><span aria-hidden="true">✦</span><p>Nenhuma tarefa cadastrada.</p></div>
       }
-    </ul>
-  </section>
+      <ul>
+        @for (tarefa of tarefas(); track tarefa.id) {
+          <li [class.concluida]="tarefa.concluida">
+            @if (editandoId() === tarefa.id) {
+              <form class="edicao-tarefa" (submit)="$event.preventDefault(); salvarEdicao(tarefa)">
+                <label [for]="'edicao-' + tarefa.id">Editar tarefa</label>
+                <input [id]="'edicao-' + tarefa.id" [value]="tituloEdicao()"
+                  (input)="tituloEdicao.set($any($event.target).value)" [readOnly]="ocupada()">
+                <div class="acoes-tarefa">
+                  <button type="submit" [disabled]="ocupada()">Salvar</button>
+                  <button type="button" class="secundario" [disabled]="ocupada()" (click)="cancelarEdicao()">Cancelar</button>
+                </div>
+              </form>
+            } @else {
+              <div class="tarefa-texto"><h3>{{ tarefa.titulo }}</h3>
+                <span class="estado">{{ tarefa.concluida ? 'Concluída' : 'Pendente' }}</span>
+              </div>
+              <div class="acoes-tarefa">
+                <button type="button" class="secundario" [disabled]="ocupada() || carregando()"
+                  [attr.aria-label]="(tarefa.concluida ? 'Reabrir tarefa: ' : 'Concluir tarefa: ') + tarefa.titulo"
+                  (click)="concluir(tarefa)">{{ tarefa.concluida ? 'Reabrir' : 'Concluir' }}</button>
+                <button type="button" class="secundario" [disabled]="ocupada() || carregando()"
+                  [attr.aria-label]="'Editar tarefa: ' + tarefa.titulo" (click)="iniciarEdicao(tarefa)">Editar</button>
+                <button type="button" class="perigo" [disabled]="ocupada() || carregando()"
+                  [attr.aria-label]="'Apagar tarefa: ' + tarefa.titulo" (click)="pedirExclusao(tarefa)">Apagar</button>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+    @if (confirmandoExclusaoId() !== null) {
+      @if (tarefas().find(tarefa => tarefa.id === confirmandoExclusaoId()); as tarefaExclusao) {
+        <div class="popup-sobreposicao">
+          <section class="popup-exclusao" role="alertdialog" aria-modal="true"
+            aria-labelledby="popup-exclusao-titulo" (keydown.escape)="cancelarExclusao()">
+            <h2 id="popup-exclusao-titulo">Apagar tarefa?</h2>
+            <p>Tem certeza de que deseja apagar “{{ tarefaExclusao.titulo }}”?</p>
+            <div class="acoes-popup">
+              <button type="button" class="secundario" autofocus [disabled]="ocupada()"
+                (click)="cancelarExclusao()">Cancelar</button>
+              <button type="button" class="perigo" [disabled]="ocupada()"
+                (click)="excluir(tarefaExclusao)">Sim, apagar</button>
+            </div>
+          </section>
+        </div>
+      }
+    }
+  } @else {
+    <section class="introducao" aria-labelledby="titulo-pagina">
+      <p class="sobretitulo">Um passo de cada vez</p>
+      <h1 id="titulo-pagina">Seu espaço de estudo começa aqui.</h1>
+      <p>Entre ou crie uma conta para manter suas tarefas organizadas em um espaço só seu.</p>
+    </section>
+    <section class="painel acesso" aria-labelledby="acesso-titulo">
+      <h2 id="acesso-titulo">{{ modoCadastro() ? 'Criar sua conta' : 'Entrar no seu espaço' }}</h2>
+      <form (submit)="enviarAcesso($event)">
+        @if (modoCadastro()) {
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" autocomplete="name" required maxlength="100"
+            [value]="nome()" (input)="nome.set($any($event.target).value)" [readOnly]="ocupada()">
+        }
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required
+          [value]="email()" (input)="email.set($any($event.target).value)" [readOnly]="ocupada()">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" [attr.autocomplete]="modoCadastro() ? 'new-password' : 'current-password'"
+          required [value]="senha()" (input)="senha.set($any($event.target).value)" [readOnly]="ocupada()">
+        @if (modoCadastro()) {
+          <p class="ajuda">A senha precisa ter no mínimo 4 caracteres.</p>
+        }
+        @if (erroAuth()) { <p class="erro" role="alert">{{ erroAuth() }}</p> }
+        <button type="submit" [disabled]="ocupada()">
+          {{ ocupada() ? 'Aguarde…' : (modoCadastro() ? 'Cadastrar e entrar' : 'Entrar') }}
+        </button>
+      </form>
+      <p class="alternar-acesso">
+        {{ modoCadastro() ? 'Já tem uma conta?' : 'Ainda não tem conta?' }}
+        <button type="button" class="link-botao" (click)="alternarModoAcesso()">
+          {{ modoCadastro() ? 'Entrar' : 'Criar conta' }}
+        </button>
+      </p>
+    </section>
+  }
 </main>
 <footer>Seu aprendizado também se constrói nas pequenas tarefas.</footer>

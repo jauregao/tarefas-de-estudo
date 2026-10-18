@@ -1,18 +1,38 @@
 @api = http://localhost:5027
+@token = COLE_AQUI_UM_ACCESS_TOKEN
 
 GET {{api}}/api/tarefas
+Authorization: Bearer {{token}}
 
 ### Criar (resposta 201)
 POST {{api}}/api/tarefas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {"titulo": "Revisar modelos de serviço em nuvem"}
 
 ### Validação (resposta 400)
 POST {{api}}/api/tarefas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {"titulo": "   "}
 
 ### Substitua 1 pelo ID retornado no cadastro
 PATCH {{api}}/api/tarefas/1/concluir
+Authorization: Bearer {{token}}
+
+### Reabrir a tarefa
+PATCH {{api}}/api/tarefas/1/reabrir
+Authorization: Bearer {{token}}
+
+### Editar a tarefa
+PATCH {{api}}/api/tarefas/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"titulo": "Revisar CI/CD"}
+
+### Apagar a tarefa (resposta 204)
+DELETE {{api}}/api/tarefas/1
+Authorization: Bearer {{token}}

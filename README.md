@@ -7,9 +7,12 @@ Aplicação para organizar tarefas de estudo. Permite cadastrar tarefas, consult
 - Cadastro de tarefas com título obrigatório.
 - Listagem de tarefas pendentes e concluídas.
 - Conclusão de tarefas.
+- Edição e exclusão de tarefas.
+- Cadastro e login com nome, e-mail e senha.
+- Tarefas isoladas por conta autenticada.
 - Mensagens de validação, carregamento e erro na interface.
 
-O título é normalizado removendo espaços nas pontas. Títulos vazios ou compostos apenas por espaços são rejeitados. A aplicação não possui autenticação: todas as tarefas pertencem à mesma lista.
+As senhas são armazenadas como hashes pelo ASP.NET Core Identity. A API exige autenticação para operações de tarefas e só consulta ou altera tarefas pertencentes à pessoa autenticada. Títulos vazios ou compostos apenas por espaços são rejeitados.
 
 ## Arquitetura
 
@@ -48,4 +51,4 @@ As instruções de instalação, configuração, execução, build e testes est�
 
 Para usar a aplicação completa, iniciar a API e o frontend em terminais separados. Os endereços locais padrão são `http://localhost:4200` para a interface e `http://localhost:5027/api/tarefas` para a API.
 
-Os testes podem ser executados sem iniciar esses servidores ou configurar um banco PostgreSQL. Os testes de integração usam um banco SQLite temporário e não acessam o banco da aplicação.
+Os testes podem ser executados sem iniciar esses servidores ou configurar um banco PostgreSQL. Os testes de integração usam um banco SQLite temporário e verificam cadastro, login, proteção da API e isolamento de tarefas por usuário.

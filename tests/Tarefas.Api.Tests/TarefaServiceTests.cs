@@ -18,7 +18,22 @@ public class TarefaServiceTests
         await using var db = new TarefasDbContext(new DbContextOptions<TarefasDbContext>());
         var service = new TarefaService(db);
 
-        var erro = await Assert.ThrowsAsync<ArgumentException>(() => service.CriarAsync(titulo));
+        var erro = await Assert.ThrowsAsync<ArgumentException>(() => service.CriarAsync("usuario", titulo));
+
+        Assert.Equal("Informe o título da tarefa.", erro.Message);
+    }
+
+    [Theory]
+    [Trait("Category", "Unit")]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task AtualizarRejeitaTituloInvalidoAntesDeAcessarOBanco(string? titulo)
+    {
+        await using var db = new TarefasDbContext(new DbContextOptions<TarefasDbContext>());
+        var service = new TarefaService(db);
+
+        var erro = await Assert.ThrowsAsync<ArgumentException>(() => service.AtualizarAsync("usuario", 1, titulo));
 
         Assert.Equal("Informe o título da tarefa.", erro.Message);
     }
