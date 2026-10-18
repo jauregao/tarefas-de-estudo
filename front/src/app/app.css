@@ -1,6 +1,6 @@
 .pular { position: absolute; left: 1rem; top: -5rem; padding: .8rem; background: white; z-index: 1; }
 .pular:focus { top: .5rem; }
-.cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 5vw; border-bottom: 1px solid #dce4da; background: #fffef9; }
+.cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem max(1.5rem, calc((100vw - 800px) / 2 + 1.5rem)); border-bottom: 1px solid #dce4da; background: #fffef9; }
 .marca { font-weight: 750; display: flex; gap: .7rem; align-items: center; }
 .simbolo { display: inline-grid; place-items: center; width: 2rem; height: 2rem; background: #dbe8da; border-radius: .6rem; }
 .etiqueta { font-size: .8rem; color: #52665a; }
@@ -26,12 +26,30 @@ button:hover:not(:disabled) { background: #193b2c; }
 .falha p { margin-top: 0; }
 .lista ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
 .lista li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.2rem 1.4rem; background: #fffef9; border: 1px solid #dce4da; border-radius: .8rem; }
+.acoes-tarefa { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+.acoes-tarefa button { min-height: 40px; padding: .55rem .75rem; }
+.perigo { border-color: #8e3830; background: #8e3830; color: white; }
+.perigo:hover:not(:disabled) { background: #702a24; }
+.edicao-tarefa { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .5rem; width: 100%; }
+.edicao-tarefa label { grid-column: 1 / -1; margin: 0; }
+.popup-sobreposicao { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 1rem; background: rgb(20 35 27 / 45%); }
+.popup-exclusao { width: min(100%, 420px); padding: 1.4rem; border: 1px solid #dce4da; border-radius: .9rem; background: #fffef9; box-shadow: 0 1rem 3rem rgb(20 35 27 / 25%); }
+.popup-exclusao h2 { margin: 0 0 .75rem; }
+.popup-exclusao p { color: #52665a; overflow-wrap: anywhere; }
+.acoes-popup { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; }
 .tarefa-texto { min-width: 0; overflow-wrap: anywhere; }
 h3 { margin: 0 0 .45rem; font-size: 1rem; font-weight: 650; }
 .estado { display: inline-block; border-radius: 1rem; background: #f4eacb; color: #66501a; font-size: .75rem; padding: .25rem .6rem; }
 .concluida .estado { background: #dfeadb; color: #2c5036; }
-.feito { color: #416549; font-size: .85rem; white-space: nowrap; }
 .vazio { text-align: center; padding: 2rem 1rem; border: 1px dashed #809585; border-radius: .8rem; }
-.vazio span { font-size: 1.7rem; }
+.conta { display: flex; align-items: center; gap: .8rem; color: #52665a; font-size: .9rem; }
+.acesso { max-width: 520px; }
+.acesso form { display: grid; gap: .7rem; }
+.acesso label { margin: .4rem 0 0; }
+.acesso input { width: 100%; min-height: 44px; }
+.acesso form > button { margin-top: .5rem; }
+.alternar-acesso { margin: 1.25rem 0 0; color: #52665a; font-size: .9rem; }
+.link-botao { border: 0; min-height: auto; padding: .25rem; background: transparent; color: #245c48; text-decoration: underline; }
+.link-botao:hover:not(:disabled) { background: #e4ede2; }
 footer { text-align: center; padding: 1.5rem; color: #52665a; font-size: .8rem; }
 @media (max-width: 600px) { .cabecalho { flex-wrap: wrap; } main { padding-top: 2rem; } .painel { padding: 1.2rem; } .linha-form { flex-direction: column; } .lista li { align-items: flex-start; flex-direction: column; } }
