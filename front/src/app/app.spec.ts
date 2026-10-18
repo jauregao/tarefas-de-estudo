@@ -130,6 +130,40 @@ describe('Quadro de tarefas', () => {
     expect(fixture.nativeElement.textContent).toContain('Não foi possível adicionar');
     expect(fixture.nativeElement.querySelector('#titulo').value).toBe('Estudar');
   });
+  it('atualiza o contador ao carregar, cadastrar, concluir e reabrir tarefas', () => {
+    expect(fixture.nativeElement.textContent).not.toContain('Tarefas pendentes:');
+    listar();
+    expect(fixture.nativeElement.textContent).toContain('Tarefas pendentes: 0');
+
+    preencher('Revisar Git');
+    http.expectOne(url).flush({ id: 1, titulo: 'Revisar Git', concluida: false });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Tarefas pendentes: 1');
+
+    fixture.nativeElement.querySelector('[aria-label="Concluir tarefa: Revisar Git"]').click();
+    http.expectOne(url + '/1/concluir').flush({ id: 1, titulo: 'Revisar Git', concluida: true });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Tarefas pendentes: 0');
+
+    fixture.nativeElement.querySelector('[aria-label="Reabrir tarefa: Revisar Git"]').click();
+    http.expectOne(url + '/1/reabrir').flush({ id: 1, titulo: 'Revisar Git', concluida: false });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Tarefas pendentes: 1');
+  });
+
+  it('não conta tarefas que já vieram concluídas da API', () => {
+    listar([
+      { id: 1, titulo: 'Git', concluida: false },
+      { id: 2, titulo: 'Cloud', concluida: true },
+    ]);
+    expect(fixture.nativeElement.textContent).toContain('Tarefas pendentes: 1');
+  });
+
+  it('não exibe contador quando a consulta falha', () => {
+    http.expectOne(url).flush('falha', { status: 500, statusText: 'Erro' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('Tarefas pendentes:');
+  });
 });
 
 describe('Acesso ao quadro', () => {
