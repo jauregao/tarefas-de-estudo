@@ -33,7 +33,7 @@ public class TarefaService(TarefasDbContext db)
         var tarefa = await db.Tarefas
             .FirstOrDefaultAsync(item => item.Id == id && item.UsuarioId == usuarioId);
         if (tarefa is null) return null;
-        tarefa.Concluida = false;
+        tarefa.Concluida = true;
         await db.SaveChangesAsync();
         return tarefa;
     }
