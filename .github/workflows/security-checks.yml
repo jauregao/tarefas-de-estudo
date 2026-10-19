@@ -1,0 +1,52 @@
+name: Segurança - dependências
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  backend-dependencies:
+    name: API .NET - dependências
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v7
+
+      - name: Preparar .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restaurar dependências
+        run: dotnet restore Tarefas.sln
+
+      - name: Verificar vulnerabilidades de dependências da API
+        continue-on-error: true
+        run: dotnet list Tarefas.sln package --vulnerable --include-transitive
+
+  frontend-dependencies:
+    name: Angular - dependências
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v7
+
+      - name: Preparar Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Verificar vulnerabilidades de dependências do Angular
+        continue-on-error: true
+        run: npm audit --audit-level=high

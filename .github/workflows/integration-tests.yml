@@ -1,0 +1,30 @@
+name: API .NET - integração
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  integration-tests:
+    name: API .NET - testes de integração
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v7
+
+      - name: Preparar .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restaurar dependências
+        run: dotnet restore Tarefas.sln
+
+      - name: Executar testes de integração da API
+        run: dotnet test Tarefas.sln --configuration Release --no-build --no-restore --filter "Category=Integration"
