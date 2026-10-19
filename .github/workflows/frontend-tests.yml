@@ -1,0 +1,37 @@
+name: Angular - testes
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-tests:
+    name: Angular - build e testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v7
+
+      - name: Preparar Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Compilar Angular
+        run: npm run build
+
+      - name: Executar testes do Angular
+        run: npm test
