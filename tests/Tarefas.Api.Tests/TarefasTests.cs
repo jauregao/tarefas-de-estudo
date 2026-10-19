@@ -66,8 +66,9 @@ public class TarefasTests
             var atualizada = await clienteAlice.PatchAsJsonAsync($"/api/tarefas/{tarefaAlice.Id}", new { titulo = "  Estudar CI/CD  " });
             Assert.Equal(HttpStatusCode.OK, atualizada.StatusCode);
             Assert.Equal("Estudar CI/CD", (await atualizada.Content.ReadFromJsonAsync<TarefaResposta>())!.Titulo);
-            Assert.Equal(HttpStatusCode.OK,
-                (await clienteAlice.PatchAsync($"/api/tarefas/{tarefaAlice.Id}/concluir", null)).StatusCode);
+            var concluida = await clienteAlice.PatchAsync($"/api/tarefas/{tarefaAlice.Id}/concluir", null);
+            Assert.Equal(HttpStatusCode.OK, concluida.StatusCode);
+            Assert.True((await concluida.Content.ReadFromJsonAsync<TarefaResposta>())!.Concluida);
             var reaberta = await clienteAlice.PatchAsync($"/api/tarefas/{tarefaAlice.Id}/reabrir", null);
             Assert.Equal(HttpStatusCode.OK, reaberta.StatusCode);
             Assert.False((await reaberta.Content.ReadFromJsonAsync<TarefaResposta>())!.Concluida);
